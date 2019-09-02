@@ -1,4 +1,5 @@
 # WODY  fitness web-app 
+![logo](./wody-doc/logo.png)
 
 ## Porqué WODY ?
 
