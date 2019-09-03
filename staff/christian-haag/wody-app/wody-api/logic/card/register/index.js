@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const { validate } = require('wody-utils')
-const { model: { User, Card } } = require('wody-data')
+const { models: { User, Card } } = require('wody-data')
 
 /**
  * Checks if user exist and add card . 
