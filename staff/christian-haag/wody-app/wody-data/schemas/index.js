@@ -2,5 +2,6 @@ module.exports = {
     card: require('./card'),
     vehicle: require('./vehicle'),
     user: require('./user'),
-    property: require('./property')
+    property: require('./property'),
+    movement: require('./movement')
 }
