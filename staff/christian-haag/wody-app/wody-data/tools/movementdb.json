@@ -428,8 +428,7 @@ db.movements.insertMany([
     "_id": movId36,
     movementNames: "Strict Muscle up",
     movementType: "bw",
-    difficulty: 3
-    ,
+    difficulty: 3,
     restime: 172800,
     bord: "",
     onerm: "",
@@ -459,8 +458,7 @@ db.movements.insertMany([
     "_id": movId39,
     movementNames: "Burpee Bar muscle-up",
     movementType: "bw",
-    difficulty: 3
-    ,
+    difficulty: 3,
     restime: 172800,
     bord: "",
     onerm: "",
