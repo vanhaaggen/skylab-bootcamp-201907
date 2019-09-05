@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
-const { card, user, property, vehicle, movement } = require('./schemas')
+const { onerm, user, workout, movement } = require('./schemas')
 
 module.exports = {
     User: mongoose.model('User', user),
-    Card: mongoose.model('Card', card),
-    Property: mongoose.model('Property', property),
-    Vehicle: mongoose.model('Vehicle', vehicle),
+    Onerm: mongoose.model('Onerm', onerm),
+    Workout: mongoose.model('Workout', workout),
     Movement: mongoose.model('Movement', movement)
 }

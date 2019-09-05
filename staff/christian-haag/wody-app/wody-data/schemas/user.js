@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
-const cardSchema = require('./card')
+const onerm = require('./onerm')
 
 module.exports = new Schema({
 
@@ -24,7 +24,22 @@ module.exports = new Schema({
         type: String,
         required: true
     },
-    cards: [cardSchema]
+    current: workout,
+    historic: [workout],
+    fitnesslevel: {
+        type: Number,
+        required: true
+    },
+    goal: {
+        type: Number,
+        required: true
+    },
+    exp: {
+        type: Number,
+        required: true
+    },
+    rm: [onerm]
+
 
 })
 
