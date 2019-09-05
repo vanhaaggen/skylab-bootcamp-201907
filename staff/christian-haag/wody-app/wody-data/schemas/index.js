@@ -1,7 +1,7 @@
 module.exports = {
-    card: require('./card'),
+    onerm: require('./onerm'),
     vehicle: require('./vehicle'),
     user: require('./user'),
-    property: require('./property'),
+    workout: require('./workout'),
     movement: require('./movement')
 }
