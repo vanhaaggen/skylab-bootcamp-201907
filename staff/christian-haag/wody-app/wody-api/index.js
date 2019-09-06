@@ -6,9 +6,9 @@ const { name, version } = require('./package')
 const routes = require('./routes')
 const cors = require('cors')
 
-const { env: { PORT, DB_URL } } = process
+const { env: { PORT, DB_URL_API_LOGIC_TEST } } = process
 
-mongoose.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(DB_URL_API_LOGIC_TEST, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         const app = express()
 

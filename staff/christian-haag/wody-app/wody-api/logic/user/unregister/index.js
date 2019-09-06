@@ -1,5 +1,5 @@
-const validate = require('../../../utils/validate')
-const { User } = require('../../../data')
+const { validate } = require('wody-utils')
+const { models: { User } } = require('wody-data')
 /**
  * Unregisters a user.
  * 

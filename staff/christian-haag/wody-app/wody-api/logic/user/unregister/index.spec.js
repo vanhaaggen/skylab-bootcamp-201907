@@ -1,23 +1,72 @@
 const { expect } = require('chai')
 const logic = require('../../.')
-const { User } = require('../../../data')
+const { models: { User } } = require('wody-data')
 const mongoose = require('mongoose')
+const { random, floor } = Math
 
 describe('logic - unregister user', () => {
-    before(() => mongoose.connect('mongodb://localhost/my-api-test', { useNewUrlParser: true }))
+    before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
-    let name, surname, email, password, id
+    let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, id
+
+    let genderRandom = ['male', 'female']
+    let fitnessLvlRandom = ['low', 'mid', 'high']
+    let goalRandom = ['lose', 'fit', 'gain']
+    let rand = (param) => floor(random() * param.length)
 
     beforeEach(async () => {
-        name = `name-${Math.random()}`
-        surname = `surname-${Math.random()}`
-        email = `email-${Math.random()}@domain.com`
-        password = `password-${Math.random()}`
+        name = `name-${random()}`
+        surname = `surname-${random()}`
+        email = `email-${random()}@domain.com`
+        password = `password-${random()}`
+        gender = genderRandom[rand(genderRandom)]
+        fitnesslevel = fitnessLvlRandom[rand(fitnessLvlRandom)]
+        goal = goalRandom[rand(goalRandom)]
+        birthday = '29/06/1984'
+        weight = floor(random() * ((130 - 50) + 1) + 50)
+        height = floor(random() * ((215 - 50) + 1) + 50)
 
         await User.deleteMany()
-        const user = await User.create({ name, surname, email, password })
+        const user = await User.create({ name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel })
         id = user.id
     })
+
+    it('should fail on empty id', () =>
+        expect(() =>
+            logic.unregisterUser('', password)
+        ).to.throw('id is empty or blank')
+    )
+
+    it('should fail on undefined id', () =>
+        expect(() =>
+            logic.unregisterUser(undefined, password)
+        ).to.throw(`id with value undefined is not a string`)
+    )
+
+    it('should fail on wrong data type', () =>
+        expect(() =>
+            logic.unregisterUser(123456798, password)
+        ).to.throw(`id with value 123456798 is not a string`)
+    )
+
+    it('should fail on empty password', () =>
+        expect(() =>
+            logic.unregisterUser(id, '')
+        ).to.throw('password is empty or blank')
+    )
+
+    it('should fail on undefined password', () =>
+        expect(() =>
+            logic.unregisterUser(id, undefined)
+        ).to.throw(`password with value undefined is not a string`)
+    )
+
+    it('should fail on wrong data type', () =>
+        expect(() =>
+            logic.unregisterUser(id, 123456798)
+        ).to.throw(`password with value 123456798 is not a string`)
+    )
+
 
     it('should succeed on correct data', async () => {
         const result = await logic.unregisterUser(id, password)

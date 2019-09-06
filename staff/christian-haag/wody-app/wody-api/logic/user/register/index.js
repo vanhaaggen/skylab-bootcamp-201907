@@ -35,7 +35,7 @@ module.exports = function (name, surname, email, password, gender, birthday, wei
     return (async () => {
         const user = await User.findOne({ email })
 
-        if (user) throw new Error(`wrong credentials`)
+        if (user) throw new Error(`user already exist`)
 
         const create = await User.create({ name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel })
         return create

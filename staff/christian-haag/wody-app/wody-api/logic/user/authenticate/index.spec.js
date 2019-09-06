@@ -2,65 +2,61 @@ const { expect } = require('chai')
 const logic = require('../../.')
 const { models: { User } } = require('wody-data')
 const mongoose = require('mongoose')
-const { random, round } = Math
+const { random, floor } = Math
 
 
 describe('logic - authenticate user', () => {
-    before(() => mongoose.connect('mongodb://localhost/wodyDb', { useNewUrlParser: true }))
+    before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
-    let name, surname, email, password, id
+    let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, id
+
+    let genderRandom = ['male', 'female']
+    let fitnessLvlRandom = ['low', 'mid', 'high']
+    let goalRandom = ['lose', 'fit', 'gain']
+    let rand = (param) => floor(random() * param.length)
 
     beforeEach(async () => {
-        name = `name-${Math.random()}`
-        surname = `surname-${Math.random()}`
-        email = `email-${Math.random()}@domain.com`
-        password = `password-${Math.random()}`
-        fitnesslevel = round(random() * 3)
-        goal = round(random() * 3)
-        exp = round(random() * 3)
+        name = `name-${random()}`
+        surname = `surname-${random()}`
+        email = `email-${random()}@domain.com`
+        password = `password-${random()}`
+        gender = genderRandom[rand(genderRandom)]
+        fitnesslevel = fitnessLvlRandom[rand(fitnessLvlRandom)]
+        goal = goalRandom[rand(goalRandom)]
+        birthday = '29/06/1984'
+        weight = floor(random() * ((130 - 50) + 1) + 50)
+        height = floor(random() * ((215 - 50) + 1) + 50)
 
         await User.deleteMany()
-        const user = await User.create({ name, surname, email, password, fitnesslevel, goal, exp })
+        const user = await User.create({ name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel })
         id = user.id
     })
 
     //email
-    it('should fail on empty email', () =>
+    it('should fail on wrong format', () =>
         expect(() =>
-            logic.registerUser(name, surname, '', password, fitnesslevel, goal, exp)
-        ).to.throw('email is empty or blank')
+            logic.authenticateUser(123456798, password)
+        ).to.throw('email with value 123456798 is not a valid e-mail')
     )
 
-    it('should fail on undefined email', () =>
-        expect(() =>
-            logic.registerUser(name, surname, undefined, password, fitnesslevel, goal, exp)
-        ).to.throw(`email with value undefined is not a string`)
-    )
-
-    it('should fail on wrong data type', () =>
-        expect(() =>
-            logic.registerUser(name, surname, 123456798, password, fitnesslevel, goal, exp)
-        ).to.throw(`email with value 123456798 is not a string`)
-    )
     //password
     it('should fail on empty password', () =>
         expect(() =>
-            logic.registerUser(name, surname, email, '', fitnesslevel, goal, exp)
+            logic.authenticateUser(email, '')
         ).to.throw('password is empty or blank')
     )
 
     it('should fail on undefined password', () =>
         expect(() =>
-            logic.registerUser(name, surname, email, undefined, fitnesslevel, goal, exp)
+            logic.authenticateUser(email, undefined)
         ).to.throw(`password with value undefined is not a string`)
     )
 
     it('should fail on wrong data type', () =>
         expect(() =>
-            logic.registerUser(name, surname, email, 123456798, fitnesslevel, goal, exp)
+            logic.authenticateUser(email, 123456798)
         ).to.throw(`password with value 123456798 is not a string`)
     )
-
 
     it('should succeed on correct data', async () => {
         const _id = await logic.authenticateUser(email, password)
@@ -68,8 +64,8 @@ describe('logic - authenticate user', () => {
         expect(_id).to.exist
         expect(_id).to.be.a('string')
         expect(_id).to.equal(id)
-
     })
+
 
     it('should fail on non existing email', async () => {
         const fakeMail = 'tedoy@conelMechero.sole'
@@ -80,7 +76,7 @@ describe('logic - authenticate user', () => {
         }
     })
 
-    it('should fail on non existing email', async () => {
+    it('should fail on non existing password', async () => {
         const fakePass = '16519616'
         try {
             await logic.authenticateUser(email, fakePass)
@@ -88,8 +84,6 @@ describe('logic - authenticate user', () => {
             expect(message).to.equal('wrong credentials')
         }
     })
-
-
 
     after(() => mongoose.disconnect())
 })

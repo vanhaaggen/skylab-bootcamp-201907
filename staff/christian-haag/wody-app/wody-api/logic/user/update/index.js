@@ -2,7 +2,7 @@ const { validate } = require('wody-utils')
 const { models: { User } } = require('wody-data')
 
 /**
- * Updates a user.
+ * Updates a users data.
  * 
  * @param {string} id
  * @param {Object} data

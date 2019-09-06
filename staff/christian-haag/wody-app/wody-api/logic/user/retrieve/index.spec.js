@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const { random, floor } = Math
 
 describe('logic - retrieve user', () => {
-    before(() => mongoose.connect('mongodb://localhost/wodyDb', { useNewUrlParser: true }))
+    before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
     let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, id
 

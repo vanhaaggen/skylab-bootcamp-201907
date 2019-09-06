@@ -2,57 +2,103 @@ const { expect } = require('chai')
 const logic = require('../../.')
 const { models: { User } } = require('wody-data')
 const mongoose = require('mongoose')
+const { random, floor } = Math
 
-describe('logic - update user', () => {
-    before(() => mongoose.connect('mongodb://localhost/wodyDb', { useNewUrlParser: true }))
+describe('logic -  prepare env. to update user', () => {
+    before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
-    let name, surname, email, password, id, body
+    let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, id
+
+    let genderRandom = ['male', 'female']
+    let fitnessLvlRandom = ['low', 'mid', 'high']
+    let goalRandom = ['lose', 'fit', 'gain']
+    let rand = (param) => floor(random() * param.length)
 
     beforeEach(async () => {
-        name = `name-${Math.random()}`
-        surname = `surname-${Math.random()}`
-        email = `email-${Math.random()}@domain.com`
-        password = `password-${Math.random()}`
-
-        body = {
-            name: `Pepito`,
-            surname: `Grillo`,
-            email: `pepito@grillo`,
-            password: `0000000`,
-            fitnesslevel: 3
-        }
+        name = `name-${random()}`
+        surname = `surname-${random()}`
+        email = `email-${random()}@domain.com`
+        password = `password-${random()}`
+        gender = genderRandom[rand(genderRandom)]
+        fitnesslevel = fitnessLvlRandom[rand(fitnessLvlRandom)]
+        goal = goalRandom[rand(goalRandom)]
+        birthday = '29/06/1984'
+        weight = floor(random() * ((130 - 50) + 1) + 50)
+        height = floor(random() * ((215 - 50) + 1) + 50)
 
         await User.deleteMany()
-        const user = await User.create({ name, surname, email, password })
+        const user = await User.create({ name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel })
         id = user.id
-
     })
 
-    it('should succeed on correct data', async () => {
-        const result = await logic.updateUser(id, body)
-
-        expect(result).not.to.exist
-
-
-        const user = await User.findById(id)
+    it('should succed on correct data', async () => {
+        const user = await logic.retrieveUser(id)
 
         expect(user).to.exist
-        expect(user.name).to.equal(body.name)
-        expect(user.surname).to.equal(body.surname)
-        expect(user.email).to.equal(body.email)
-        expect(user.password).to.equal(body.password)
-        expect(body.fitnesslevel).to.exist
+        expect(user.id).to.equal(id)
+        expect(user.weight).to.equal(weight)
+        expect(user.email).to.equal(email)
+        expect(user.fitnesslevel).to.equal(fitnesslevel)
 
     })
 
-    it('should fail on non-existing user', async () => {
-        id = '5d5d5530531d455f75da9fF9'
-        try {
-            await logic.updateUser(id, body)
-        } catch ({ message }) {
-            expect(message).to.equal('user with id 5d5d5530531d455f75da9fF9 does not exist')
-        }
+    describe('logic - update user happy-path', () => {
+        let body
+        let fitnessLvlRandom = ['low', 'mid', 'high']
+
+        let rand = (param) => floor(random() * param.length)
+
+        beforeEach(async () => {
+
+            body = {
+                weight: floor(random() * ((130 - 50) + 1) + 50),
+                fitnesslevel: `updated-${fitnessLvlRandom[rand(fitnessLvlRandom)]}`,
+                email: `updated-${random()}@domain.com`,
+                password: `updated-${random()}`,
+            }
+        })
+
+        it('should fail on empty id', () =>
+            expect(() =>
+                logic.updateUser('')
+            ).to.throw('id is empty or blank')
+        )
+
+        it('should fail on undefined id', () =>
+            expect(() =>
+                logic.updateUser(undefined)
+            ).to.throw(`id with value undefined is not a string`)
+        )
+
+        it('should fail on wrong data type', () =>
+            expect(() =>
+                logic.updateUser(123456798)
+            ).to.throw(`id with value 123456798 is not a string`)
+        )
+
+        it('should succed on correct data input', () => {
+            expect(body.weight).to.be.a('number')
+            expect(body.fitnesslevel).to.be.a('string')
+            expect(body.email).to.be.a('string')
+            expect(body.password).to.be.a('string')
+        })
+
+        it('should succeed on correct data', async () => {
+            const result = await logic.updateUser(id, body)
+
+            expect(result).not.to.exist
+
+            const user = await User.findById(id)
+
+            expect(user).to.exist
+            expect(user.weight).to.equal(body.weight)
+            expect(user.fitnesslevel).to.equal(body.fitnesslevel)
+            expect(user.email).to.equal(body.email)
+            expect(user.password).to.equal(body.password)
+        })
+
     })
 
     after(() => mongoose.disconnect())
 })
+

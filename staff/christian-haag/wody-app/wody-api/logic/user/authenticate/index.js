@@ -11,7 +11,8 @@ const { models: { User } } = require('wody-data')
  */
 module.exports = function (email, password) {
 
-    validate.email(email, 'username')
+    validate.email(email, 'email')
+    validate.string(email, 'email')
     validate.string(password, 'password')
 
     return (async () => {

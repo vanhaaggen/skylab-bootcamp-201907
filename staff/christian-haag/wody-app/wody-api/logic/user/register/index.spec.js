@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const { random, floor } = Math
 
 describe('logic - register user', () => {
-    before(() => mongoose.connect('mongodb://localhost/wodyDb', { useNewUrlParser: true }))
+    before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
     let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel
 
@@ -26,7 +26,7 @@ describe('logic - register user', () => {
         weight = floor(random() * ((130 - 50) + 1) + 50)
         height = floor(random() * ((215 - 50) + 1) + 50)
 
-
+        await User.deleteMany()
     })
 
     //validations
@@ -190,14 +190,6 @@ describe('logic - register user', () => {
 
     })
 
-    it('should fail on existing email', async () => {
-        try {
-            await logic.registerUser(name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel)
-        } catch ({ message }) {
-            expect(message).to.equal('wrong credentials')
-        }
-    })
-
     it('should fail on wrong birthday format', async () => {
         try {
             await logic.registerUser(name, surname, email, password, gender, '1984/6/25', weight, height, goal, fitnesslevel)
@@ -206,6 +198,34 @@ describe('logic - register user', () => {
         }
     })
 
+    describe('logic - Existing user case', () => {
 
+        beforeEach(async () => {
+
+            let body = {
+                name: 'Pepito',
+                surname: 'Grillo',
+                email: 'pepitogrillo@mail.com',
+                password: '1615616',
+                gender: 'male',
+                birthday: '29/06/1984',
+                weight: 85,
+                height: 188,
+                goal: 'gain',
+                fitnesslevel: 'mid'
+            }
+            await User.create(body)
+
+
+        })
+        it('should fail if user exists', async () => {
+            try {
+                await logic.registerUser('Pepito', 'Grillo', 'pepitogrillo@mail.com', '1615616', 'male', '29/06/1984', 85, 188, 'gain', 'mid')
+            } catch ({ message }) {
+                expect(message).to.equal('user already exist')
+            }
+        })
+
+    })
     after(() => mongoose.disconnect())
 })
