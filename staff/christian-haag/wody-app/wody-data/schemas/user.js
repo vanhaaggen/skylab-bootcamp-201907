@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
-const { Schema } = mongoose
+const { Schema, ObjectId } = mongoose
 
-const onerm = require('./onerm')
+const workout = require('./workout')
 
 module.exports = new Schema({
 
@@ -24,22 +24,39 @@ module.exports = new Schema({
         type: String,
         required: true
     },
-    current: workout,
-    historic: [workout],
-    fitnesslevel: {
+    current: [workout],
+    historic: [{ type: ObjectId, ref: 'Workout' }],
+    gender: {
+        type: String,
+        require: true,
+        enum: ['male', 'female'],
+        default: undefined
+    },
+    birthday: {
+        type: String,
+        required: false,
+        match: /(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$/
+    },
+    height: {
         type: Number,
-        required: true
+        required: false
+    },
+    weight: {
+        type: Number,
+        required: false
     },
     goal: {
-        type: Number,
-        required: true
+        type: String,
+        required: true,
+        enum: ['lose', 'fit', 'gain'],
+        default: undefined
     },
-    exp: {
-        type: Number,
-        required: true
-    },
-    rm: [onerm]
-
+    fitnesslevel: {
+        type: String,
+        required: true,
+        enum: ['low', 'mid', 'high'],
+        default: undefined
+    }
 
 })
 
