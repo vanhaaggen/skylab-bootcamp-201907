@@ -33,9 +33,10 @@ describe('logic - register user', () => {
 
     it('should return all filtered movements', async () => {
         const movement = await logic.calculateMovement(id)
-
+        debugger
         expect(movement).to.exist
         movement.forEach(mov => {
+
             expect(mov.gender).to.equal(gender)
             expect(mov.goal).to.equal(goal)
             expect(mov.fitnesslevel).to.equal(fitnesslevel)

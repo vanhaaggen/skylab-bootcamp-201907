@@ -1,6 +1,6 @@
 const { validate } = require('wody-utils')
 const { models: { User, Movement, Workout } } = require('wody-data')
-
+const { random, floor } = Math
 /**
  * Returns movements following users profile
  * 
@@ -11,19 +11,26 @@ const { models: { User, Movement, Workout } } = require('wody-data')
 
 module.exports = function (id) {
 
-
     validate.string(id, 'id')
-    debugger
+
     return (async () => {
+        let wodies
+
         const user = await User.findById(id)
+
         if (!user) throw new Error('user does not exist')
-        user.gender === 'male' && user.goal === 'lose' && user.fitnesslevel === 'low'
 
-        const case1 = await Movement.find({ gender: 'male', goal: 'lose', fitnesslevel: 'low' }).lean()
+        const { gender, goal, fitnesslevel } = user
+
+        const movements = Movement.find({ gender: gender, goal: goal, fitnesslevel: fitnesslevel }).lean()
+
+        wodies = movements.id
+
+        for (let i = 0; i <= 6; i++) {
+
+        }
 
 
-
-        return case1
     })()
 
 }
