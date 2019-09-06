@@ -3,11 +3,11 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 module.exports = new Schema({
-    movementNames: {
+    movement: {
         type: String,
         required: true
     },
-    movementType: {
+    type: {
         type: String,
         required: true,
     },
@@ -23,8 +23,24 @@ module.exports = new Schema({
         type: String,
         required: false
     },
-    onerem: {
-        type: Boolean,
+    gender: {
+        type: String,
+        required: true
+    },
+    goal: {
+        type: String,
+        required: true
+    },
+    fitnesslevel: {
+        type: String,
+        required: true
+    },
+    weights: {
+        type: String,
+        required: false,
+    },
+    reps: {
+        type: Array,
         required: false
     },
     url: {
