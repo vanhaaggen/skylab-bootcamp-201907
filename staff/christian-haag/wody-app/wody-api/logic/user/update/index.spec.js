@@ -1,10 +1,10 @@
 const { expect } = require('chai')
 const logic = require('../../.')
-const { User } = require('../../../data')
+const { models: { User } } = require('wody-data')
 const mongoose = require('mongoose')
 
 describe('logic - update user', () => {
-    before(() => mongoose.connect('mongodb://localhost/my-api-test', { useNewUrlParser: true }))
+    before(() => mongoose.connect('mongodb://localhost/wodyDb', { useNewUrlParser: true }))
 
     let name, surname, email, password, id, body
 
@@ -15,16 +15,17 @@ describe('logic - update user', () => {
         password = `password-${Math.random()}`
 
         body = {
-            name: `name-${Math.random()}`,
-            surname: `surname-${Math.random()}`,
-            email: `email-${Math.random()}@domain.com`,
-            password: `password-${Math.random()}`,
-            extra: `extra-${Math.random()}`
+            name: `Pepito`,
+            surname: `Grillo`,
+            email: `pepito@grillo`,
+            password: `0000000`,
+            fitnesslevel: 3
         }
 
         await User.deleteMany()
         const user = await User.create({ name, surname, email, password })
         id = user.id
+
     })
 
     it('should succeed on correct data', async () => {
@@ -40,7 +41,7 @@ describe('logic - update user', () => {
         expect(user.surname).to.equal(body.surname)
         expect(user.email).to.equal(body.email)
         expect(user.password).to.equal(body.password)
-        expect(user.extra).not.to.exist
+        expect(body.fitnesslevel).to.exist
 
     })
 
@@ -49,7 +50,7 @@ describe('logic - update user', () => {
         try {
             await logic.updateUser(id, body)
         } catch ({ message }) {
-            expect(message).to.equal(`user with id ${id} does not exist`)
+            expect(message).to.equal('user with id 5d5d5530531d455f75da9fF9 does not exist')
         }
     })
 

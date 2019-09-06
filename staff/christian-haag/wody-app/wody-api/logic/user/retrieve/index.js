@@ -1,7 +1,5 @@
-const validate = require('../../../utils/validate')
-const { User } = require('../../../data')
-const mongoose = require('mongoose')
-
+const { validate } = require('wody-utils')
+const { models: { User } } = require('wody-data')
 /**
  * Retrieves a user by its id.
  * 

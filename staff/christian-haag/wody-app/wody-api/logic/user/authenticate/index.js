@@ -1,5 +1,5 @@
-const validate = require('../../../utils/validate')
-const { User } = require('../../../data')
+const { validate } = require('wody-utils')
+const { models: { User } } = require('wody-data')
 
 /**
  * Authenticates a user by its credentials.
@@ -18,8 +18,8 @@ module.exports = function (email, password) {
 
         const user = await User.findOne({ email })
 
-        if (!user) throw new Error(`user with e-mail ${email} does not exist`)
-        debugger
+        if (!user) throw new Error(`wrong credentials`)
+
         if (user.password !== password) throw new Error('wrong credentials')
 
         return user.id
