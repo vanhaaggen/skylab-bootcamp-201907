@@ -3,6 +3,7 @@ const logic = require('../../.')
 const { models: { User } } = require('wody-data')
 const mongoose = require('mongoose')
 const { random, floor } = Math
+const bcrypt = require('bcryptjs')
 
 
 describe('logic - authenticate user', () => {
@@ -28,7 +29,8 @@ describe('logic - authenticate user', () => {
         height = floor(random() * ((215 - 50) + 1) + 50)
 
         await User.deleteMany()
-        const user = await User.create({ name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel })
+        const hash = await bcrypt.hash(password, 10)
+        const user = await User.create({ name, surname, email, password: hash, gender, birthday, weight, height, goal, fitnesslevel })
         id = user.id
     })
 

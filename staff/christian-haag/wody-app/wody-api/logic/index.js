@@ -4,7 +4,10 @@ module.exports = {
     retrieveUser: require('./user/retrieve'),
     unregisterUser: require('./user/unregister'),
     updateUser: require('./user/update'),
-    calculateMovement: require('./movement/calcmovement')
+    calculateWorkout: require('./movement/calcworkout'),
+    favWorkout: require('./movement/tooglefavworkout'),
+    retrieveFavWorkout: require('./movement/retrievefavworkout'),
+    endWorkout: require('./movement/endworkout')
 
 
 }

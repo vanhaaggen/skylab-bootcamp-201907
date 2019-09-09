@@ -1,5 +1,6 @@
 const { validate } = require('wody-utils')
 const { models: { User } } = require('wody-data')
+const bcrypt = require('bcryptjs')
 
 /**
  * Authenticates a user by its credentials.
@@ -21,7 +22,9 @@ module.exports = function (email, password) {
 
         if (!user) throw new Error(`wrong credentials`)
 
-        if (user.password !== password) throw new Error('wrong credentials')
+        const match = await bcrypt.compare(password, user.password)
+
+        if (!match) throw Error('wrong credentials')
 
         return user.id
 

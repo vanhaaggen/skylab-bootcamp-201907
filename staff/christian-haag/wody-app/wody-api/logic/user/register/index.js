@@ -1,5 +1,6 @@
 const { validate } = require('wody-utils')
 const { models: { User } } = require('wody-data')
+const bcrypt = require('bcryptjs')
 
 /**
  * Registers a user.
@@ -37,7 +38,9 @@ module.exports = function (name, surname, email, password, gender, birthday, wei
 
         if (user) throw new Error(`user already exist`)
 
-        const create = await User.create({ name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel })
+        const hash = await bcrypt.hash(password, 10)
+
+        const create = await User.create({ name, surname, email, password: hash, gender, birthday, weight, height, goal, fitnesslevel })
         return create
     })()
 }

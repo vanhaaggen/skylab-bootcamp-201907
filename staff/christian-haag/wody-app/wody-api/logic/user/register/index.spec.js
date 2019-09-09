@@ -1,4 +1,5 @@
 const { expect } = require('chai')
+const bcrypt = require('bcryptjs')
 const logic = require('../../.')
 const { models: { User } } = require('wody-data')
 const mongoose = require('mongoose')
@@ -162,9 +163,6 @@ describe('logic - register user', () => {
     )
 
 
-
-
-
     //fitnessLevel, goal and exp are not necessary to validate. User only hits a button with a pre-defined value
 
     it('should succeed on correct data', async () => {
@@ -179,7 +177,6 @@ describe('logic - register user', () => {
         expect(user.name).to.equal(name)
         expect(user.surname).to.equal(surname)
         expect(user.email).to.equal(email)
-        expect(user.password).to.equal(password)
         expect(user.gender).to.equal(gender)
         expect(user.birthday).to.equal(birthday)
         expect(user.weight).to.equal(weight)
@@ -187,6 +184,8 @@ describe('logic - register user', () => {
         expect(user.fitnesslevel).to.equal(fitnesslevel)
         expect(user.goal).to.equal(goal)
 
+        const match = await bcrypt.compare(password, user.password)
+        expect(match).to.true
 
     })
 
