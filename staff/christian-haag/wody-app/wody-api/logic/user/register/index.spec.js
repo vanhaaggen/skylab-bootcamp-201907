@@ -88,6 +88,7 @@ describe('logic - register user', () => {
             logic.registerUser(name, surname, 123456798, password, gender, birthday, weight, height, goal, fitnesslevel)
         ).to.throw(`email with value 123456798 is not a string`)
     )
+
     //password
     it('should fail on empty password', () =>
         expect(() =>
@@ -105,61 +106,6 @@ describe('logic - register user', () => {
         expect(() =>
             logic.registerUser(name, surname, email, 123456798, gender, birthday, weight, height, goal, fitnesslevel)
         ).to.throw(`password with value 123456798 is not a string`)
-    )
-    //birthday
-    it('should fail on empty birthday', () =>
-        expect(() =>
-            logic.registerUser(name, surname, email, password, gender, '', weight, height, goal, fitnesslevel)
-        ).to.throw('birthday is empty or blank')
-    )
-
-    it('should fail on undefined birthday', () =>
-        expect(() =>
-            logic.registerUser(name, surname, email, password, gender, undefined, weight, height, goal, fitnesslevel)
-        ).to.throw(`birthday with value undefined is not a string`)
-    )
-
-    it('should fail on wrong data type', () =>
-        expect(() =>
-            logic.registerUser(name, surname, email, password, gender, 123456798, weight, height, goal, fitnesslevel)
-        ).to.throw(`birthday with value 123456798 is not a string`)
-    )
-
-    //weight
-    it('should fail on empty weight', () =>
-        expect(() =>
-            logic.registerUser(name, surname, email, password, gender, birthday, '', height, goal, fitnesslevel)
-        ).to.throw('weight is empty or blank')
-    )
-
-    it('should fail on undefined weight', () =>
-        expect(() =>
-            logic.registerUser(name, surname, email, password, gender, birthday, undefined, height, goal, fitnesslevel)
-        ).to.throw(`weight with value undefined is not a number`)
-    )
-
-    it('should fail on wrong data type', () =>
-        expect(() =>
-            logic.registerUser(name, surname, email, password, gender, birthday, '12345', height, goal, fitnesslevel)
-        ).to.throw(`weight with value 12345 is not a number`)
-    )
-    //height
-    it('should fail on empty height', () =>
-        expect(() =>
-            logic.registerUser(name, surname, email, password, gender, birthday, weight, '', goal, fitnesslevel)
-        ).to.throw('height is empty or blank')
-    )
-
-    it('should fail on undefined height', () =>
-        expect(() =>
-            logic.registerUser(name, surname, email, password, gender, birthday, weight, undefined, goal, fitnesslevel)
-        ).to.throw(`height with value undefined is not a number`)
-    )
-
-    it('should fail on wrong data type', () =>
-        expect(() =>
-            logic.registerUser(name, surname, email, password, gender, birthday, weight, '12345', goal, fitnesslevel)
-        ).to.throw(`height with value 12345 is not a number`)
     )
 
 

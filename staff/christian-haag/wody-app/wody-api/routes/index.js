@@ -8,6 +8,11 @@ const retrieveUser = require('./user-retrieve')
 const updateUser = require('./user-update')
 const unregisterUser = require('./user-unregister')
 
+const calculateWorkout = require('./workout-calculate')
+const toogleFavWorkout = require('./workout-toogle-fav')
+const endWorkout = require('./workout-end')
+const retrieveFavWorkout = require('./workout-retrieve-fav')
+
 
 const router = Router()
 const jsonBodyParser = bodyParser.json()
@@ -15,25 +20,15 @@ const jsonBodyParser = bodyParser.json()
 /* USER */
 router.post('/users', jsonBodyParser, registerUser)
 router.post('/auth', jsonBodyParser, authenticateUser)
-router.get('/users/:id', [tokenMiddleware, jsonBodyParser], retrieveUser)
-router.patch('/users/:id', [tokenMiddleware, jsonBodyParser], updateUser)
-router.delete('/users/:id', [tokenMiddleware, jsonBodyParser], unregisterUser)
-
-// //CARD
-// router.post('/users/:id/cards', [tokenMiddleware, jsonBodyParser], registerCard)
-// router.get('/users/:id/cards/:cardId', [tokenMiddleware, jsonBodyParser], retrieveCard)
-// router.delete('/users/:id/cards/:cardId', [tokenMiddleware, jsonBodyParser], unregisterCard)
-
-/* PROPERTY */
-// router.post('/users/:id/properties', [tokenMiddleware, jsonBodyParser], registerProperty)
-// router.get('/users/:id/properties/', [tokenMiddleware, jsonBodyParser], retrieveAllProperty)
-// router.get('/users/:id/properties/:propertyId', [tokenMiddleware, jsonBodyParser], retrieveProperty)
-// router.patch('/users/:id/properties/:propertyId', [tokenMiddleware, jsonBodyParser], updateProperty)
-// router.patch('/users/:id/properties/:propertyId/owners/:ownerId', [tokenMiddleware, jsonBodyParser], registerPropertyOwner)
-// router.delete('/users/:id/properties/:propertyId/owners/:ownerId', [tokenMiddleware, jsonBodyParser], unregisterPropertyOwner)
-// router.delete('/users/:id/properties/:propertyId', [tokenMiddleware, jsonBodyParser], unregisterProperty)
+router.get('/users', [tokenMiddleware, jsonBodyParser], retrieveUser)
+router.patch('/users', [tokenMiddleware, jsonBodyParser], updateUser)
+router.delete('/users', [tokenMiddleware, jsonBodyParser], unregisterUser)
 
 
+router.post('/users/calcworkout', [tokenMiddleware, jsonBodyParser], calculateWorkout)
+router.post('/users/workoutfav/:workoutId', [tokenMiddleware, jsonBodyParser], toogleFavWorkout)
+router.post('/users/workoutend/:workoutId', [tokenMiddleware, jsonBodyParser], endWorkout)
+router.get('/users/retrievefav', jsonBodyParser, retrieveFavWorkout)
 
 
 module.exports = router

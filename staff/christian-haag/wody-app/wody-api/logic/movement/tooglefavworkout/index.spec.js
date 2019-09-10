@@ -84,7 +84,7 @@ describe('logic- favWorkout', () => {
 
         it('should fail if workout not exist', async () => {
             try {
-                await logic.endWorkout('5d5d5530531d455f75da9fF9', userId)
+                await logic.favWorkout('5d5d5530531d455f75da9fF9', userId)
             } catch ({ message }) {
                 expect(message).to.equal('workout does not exist')
             }
@@ -92,7 +92,7 @@ describe('logic- favWorkout', () => {
 
         it('should fail if user not exist', async () => {
             try {
-                await logic.endWorkout(workoutId, '5d5d5530531d455f75da9fF9')
+                await logic.favWorkout(workoutId, '5d5d5530531d455f75da9fF9')
             } catch ({ message }) {
                 expect(message).to.equal('user does not exist')
             }
@@ -102,7 +102,7 @@ describe('logic- favWorkout', () => {
             await logic.favWorkout(workoutId, userId)
 
             const user = await User.findById(userId).lean()
-
+            debugger
             expect(user).to.exist
 
             const { historic: { 0: { fav } } } = user

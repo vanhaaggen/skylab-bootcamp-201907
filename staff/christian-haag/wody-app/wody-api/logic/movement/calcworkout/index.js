@@ -23,6 +23,7 @@ module.exports = function (id) {
         const movements = await Movement.find({ gender: gender, goal: goal, fitnesslevel: fitnesslevel }).lean()
 
         const movementsClone = [...movements]
+        debugger
         //order result randomly in array
         let selectRandomMovement = randomator(movementsClone)
         //keep only the first 5 array values
@@ -38,7 +39,7 @@ module.exports = function (id) {
             reps.splice(1)
         })
 
-        //choose repetition option
+        //choose set option
         const set = ['AMRAP', '3 rounds', '4 rounds', 'For Time']
         let randomSet = randomator(set)
         randomSet.splice(1)

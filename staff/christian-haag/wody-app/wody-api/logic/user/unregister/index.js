@@ -1,5 +1,6 @@
 const { validate } = require('wody-utils')
 const { models: { User } } = require('wody-data')
+const bcrypt = require('bcryptjs')
 /**
  * Unregisters a user.
  * 
@@ -14,10 +15,17 @@ module.exports = function (id, password) {
     validate.string(password, 'password')
 
     return (async () => {
-        const result = await User.deleteOne({ _id: id, password })
+        const user = await User.findById({ _id: id })
+
+        if (!user) throw Error('wrong credentials')
+
+        const match = await bcrypt.compare(password, user.password)
+
+        if (!match) throw Error('wrong credentials')
+
+        const result = await User.deleteOne({ _id: id, password: user.password })
 
         if (!result.deletedCount) throw new Error(`wrong credentials`)
-
 
     })()
 }

@@ -29,8 +29,6 @@ describe('logic - calculate workout', () => {
         await User.deleteMany()
         const user = await logic.registerUser(name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel)
         id = user.id
-
-
     })
 
     it('should fail on empty id', () =>
@@ -71,11 +69,10 @@ describe('logic - calculate workout', () => {
         const workoutId = await logic.calculateWorkout(id)
         const workout = await Workout.findById(workoutId)
         expect(workout).to.exist
-        const { sets, date, fav, movements } = workout
+        const { sets, date, movements } = workout
 
         expect(sets).to.exist
         expect(date).to.exist
-        expect(fav).to.exist
         expect(movements).to.exist
         expect(movements).to.be.an('array')
         expect(movements.length).to.equal(5)

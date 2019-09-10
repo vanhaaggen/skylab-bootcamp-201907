@@ -25,13 +25,6 @@ module.exports = function (name, surname, email, password, gender, birthday, wei
     validate.string(surname, 'surname')
     validate.string(email, 'email')
     validate.string(password, 'password')
-    validate.string(gender, 'gender')
-    validate.string(birthday, 'birthday')
-    validate.number(weight, 'weight')
-    validate.number(height, 'height')
-    validate.string(goal, 'goal')
-    validate.string(fitnesslevel, 'fitnesslevel')
-
 
     return (async () => {
         const user = await User.findOne({ email })

@@ -20,24 +20,24 @@ module.exports = function (workoutId, userId) {
     validate.string(userId, 'userId')
 
     return (async () => {
+        // 
         const workout = await Workout.findById(workoutId)
         const user = await User.findById(userId)
 
         if (!workout) throw new Error('workout does not exist')
         if (!user) throw new Error('user does not exist')
 
-        const { fav } = workout
+        if (user.current.length) {
+            workout.fav = !workout.fav
+            await user.save()
+            user.historic.push(workout)
+        } else {
+            const wk = user.historic.find(w => w._id.toString() === workoutId)
+            if (!wk) throw Error('Workout not found')
+            wk.fav = !wk.fav
+        }
 
-        workout.fav = !fav
-
-        const { historic } = user
-
-        historic.push(workout)
-
-        //current array has to be reseted after each workout
         if (user.current.length !== 0) user.current = []
-
-        await workout.save()
 
         await user.save()
 

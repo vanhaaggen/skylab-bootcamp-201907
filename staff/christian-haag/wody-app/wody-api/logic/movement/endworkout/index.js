@@ -18,9 +18,7 @@ module.exports = function (workoutId, userId) {
 
         if (!user) throw new Error('user does not exist')
 
-        const { historic } = user
-
-        historic.push(workout)
+        user.historic.push(workout)
 
         if (user.current.length != 0) user.current = []
 

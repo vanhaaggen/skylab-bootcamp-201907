@@ -1,10 +1,11 @@
 const logic = require('../logic')
 
 module.exports = function (req, res) {
-    const { params: { id }, body: { cardBrand, cardType, number, expiry } } = req
+    const { userId, params: { workoutId } } = req
+
     try {
-        logic.registerCard(id, cardBrand, cardType, number, expiry)
-            .then(() => res.status(201).json({ message: 'card correctly added' }))
+        logic.endWorkout(workoutId, userId)
+            .then(() => res.status(201).json({ message: 'Favorite correctly set' }))
             .catch(({ message }) => res.status(400).json({ error: message }))
     } catch ({ message }) {
         res.status(400).json({ error: message })

@@ -3,6 +3,7 @@ const logic = require('../../.')
 const { models: { User } } = require('wody-data')
 const mongoose = require('mongoose')
 const { random, floor } = Math
+const bcrypt = require('bcryptjs')
 
 describe('logic - unregister user', () => {
     before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
@@ -27,7 +28,8 @@ describe('logic - unregister user', () => {
         height = floor(random() * ((215 - 50) + 1) + 50)
 
         await User.deleteMany()
-        const user = await User.create({ name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel })
+        const hash = await bcrypt.hash(password, 10)
+        const user = await User.create({ name, surname, email, password: hash, gender, birthday, weight, height, goal, fitnesslevel })
         id = user.id
     })
 
@@ -69,14 +71,11 @@ describe('logic - unregister user', () => {
 
 
     it('should succeed on correct data', async () => {
-        const result = await logic.unregisterUser(id, password)
+        await logic.unregisterUser(id, password)
 
-        expect(result).not.to.exist
+        const user = await User.findById({ _id: id })
 
-
-        const user = await User.findById(id)
-
-        expect(user).not.to.exist
+        expect(user).to.not.exist
 
     })
 

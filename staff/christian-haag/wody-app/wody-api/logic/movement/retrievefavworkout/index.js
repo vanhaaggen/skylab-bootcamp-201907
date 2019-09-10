@@ -17,7 +17,7 @@ module.exports = function (userId) {
     return (async () => {
         //find user
         const user = await User.findById(userId)
-        debugger
+
         if (!user) throw new Error('user does not exist')
 
         const favWorkouts = user.historic.filter(item => item.fav === true)
