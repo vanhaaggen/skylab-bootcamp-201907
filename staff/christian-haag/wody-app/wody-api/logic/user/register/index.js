@@ -19,12 +19,15 @@ const bcrypt = require('bcryptjs')
  * 
  * @returns {Promise}
  */
-module.exports = function (name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel) {
+module.exports = function (name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel) {
 
     validate.string(name, 'name')
     validate.string(surname, 'surname')
     validate.string(email, 'email')
     validate.string(password, 'password')
+    validate.string(repassword, 'repassword')
+
+    if (repassword !== password) throw new Error('re-password does not match')
 
     return (async () => {
         const user = await User.findOne({ email })

@@ -5,10 +5,10 @@ const { models: { User } } = require('wody-data')
 const mongoose = require('mongoose')
 const { random, floor } = Math
 
-describe('logic - register user', () => {
+describe.only('logic - register user', () => {
     before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
-    let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel
+    let name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel
 
     let genderRandom = ['male', 'female']
     let fitnessLvlRandom = ['low', 'mid', 'high']
@@ -19,7 +19,8 @@ describe('logic - register user', () => {
         name = `name-${random()}`
         surname = `surname-${random()}`
         email = `email-${random()}@domain.com`
-        password = `password-${random()}`
+        password = '`password-${random()}`'
+        repassword = password
         gender = genderRandom[rand(genderRandom)]
         fitnesslevel = fitnessLvlRandom[rand(fitnessLvlRandom)]
         goal = goalRandom[rand(goalRandom)]
@@ -108,12 +109,37 @@ describe('logic - register user', () => {
         ).to.throw(`password with value 123456798 is not a string`)
     )
 
+    //repassword
+    it('should fail on empty repassword', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, '', gender, birthday, weight, height, goal, fitnesslevel)
+        ).to.throw('repassword is empty or blank')
+    )
+
+    it('should fail on undefined repassword', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, undefined, gender, birthday, weight, height, goal, fitnesslevel)
+        ).to.throw(`repassword with value undefined is not a string`)
+    )
+
+    it('should fail on wrong data type', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, 123456798, gender, birthday, weight, height, goal, fitnesslevel)
+        ).to.throw(`repassword with value 123456798 is not a string`)
+    )
+
+    it('should fail if repassword is not matching password', () => {
+        expect(() => {
+            logic.registerUser(name, surname, email, password, '123456798', gender, birthday, weight, height, goal, fitnesslevel)
+        }).to.throw('re-password does not match')
+    })
+
 
     //fitnessLevel, goal and exp are not necessary to validate. User only hits a button with a pre-defined value
 
     it('should succeed on correct data', async () => {
 
-        const result = await logic.registerUser(name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel)
+        const result = await logic.registerUser(name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel)
 
         expect(result).to.exist
 
@@ -137,7 +163,7 @@ describe('logic - register user', () => {
 
     it('should fail on wrong birthday format', async () => {
         try {
-            await logic.registerUser(name, surname, email, password, gender, '1984/6/25', weight, height, goal, fitnesslevel)
+            await logic.registerUser(name, surname, email, password, repassword, gender, '1984/6/25', weight, height, goal, fitnesslevel)
         } catch (error) {
             expect(error._message).to.equal('User validation failed')
         }
@@ -165,7 +191,7 @@ describe('logic - register user', () => {
         })
         it('should fail if user exists', async () => {
             try {
-                await logic.registerUser('Pepito', 'Grillo', 'pepitogrillo@mail.com', '1615616', 'male', '29/06/1984', 85, 188, 'gain', 'mid')
+                await logic.registerUser('Pepito', 'Grillo', 'pepitogrillo@mail.com', '1615616', '1615616', 'male', '29/06/1984', 85, 188, 'gain', 'mid')
             } catch ({ message }) {
                 expect(message).to.equal('user already exist')
             }

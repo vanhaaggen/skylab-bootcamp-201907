@@ -33,7 +33,7 @@ module.exports = function (workoutId, userId) {
             user.historic.push(workout)
         } else {
             const wk = user.historic.find(w => w._id.toString() === workoutId)
-            if (!wk) throw Error('Workout not found')
+
             wk.fav = !wk.fav
         }
 
