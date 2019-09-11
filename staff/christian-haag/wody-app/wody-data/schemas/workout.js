@@ -1,16 +1,22 @@
 const mongoose = require('mongoose')
 
-const { Schema, ObjectId } = mongoose
+const { Schema } = mongoose
 
 module.exports = new Schema({
     fav: {
         type: Boolean,
-        required: true
     },
     date: {
-        type: Date,
-        required: true
+        type: Number,
+        default: Date.now()
     },
-    movements: [{ type: ObjectId, ref: 'Movement' }],
-
+    timefinish: {
+        type: Number
+    },
+    sets: {
+        type: Array,
+    },
+    movements: {
+        type: Array
+    }
 })

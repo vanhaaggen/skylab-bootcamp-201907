@@ -1,4 +1,5 @@
 module.exports = function (array) {
+
     let currentIndex = array.length, temporaryValue, randomIndex
 
     while (0 !== currentIndex) {
@@ -9,5 +10,8 @@ module.exports = function (array) {
         temporaryValue = array[currentIndex]
         array[currentIndex] = array[randomIndex]
         array[randomIndex] = temporaryValue
+
     }
+
+    return array
 }

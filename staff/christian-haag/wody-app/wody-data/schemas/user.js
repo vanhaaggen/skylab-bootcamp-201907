@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { Schema, ObjectId } = mongoose
+const { Schema } = mongoose
 
 const workout = require('./workout')
 
@@ -25,37 +25,29 @@ module.exports = new Schema({
         required: true
     },
     current: [workout],
-    historic: [{ type: ObjectId, ref: 'Workout' }],
+    historic: [workout],
     gender: {
         type: String,
-        require: true,
-        enum: ['male', 'female'],
-        default: undefined
+        enum: ['male', 'female']
     },
     birthday: {
         type: String,
-        required: false,
         match: /(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$/
     },
     height: {
-        type: Number,
-        required: false
+        type: Number
     },
     weight: {
-        type: Number,
-        required: false
+        type: Number
     },
     goal: {
         type: String,
-        required: true,
-        enum: ['lose', 'fit', 'gain'],
-        default: undefined
+        enum: ['lose', 'fit', 'gain']
+
     },
     fitnesslevel: {
         type: String,
-        required: true,
-        enum: ['low', 'mid', 'high'],
-        default: undefined
+        enum: ['low', 'mid', 'high']
     }
 
 })
