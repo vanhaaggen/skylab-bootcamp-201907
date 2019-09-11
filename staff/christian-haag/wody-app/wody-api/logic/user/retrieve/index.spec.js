@@ -7,7 +7,7 @@ const { random, floor } = Math
 describe('logic - retrieve user', () => {
     before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
-    let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, id
+    let name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel, id
 
     let genderRandom = ['male', 'female']
     let fitnessLvlRandom = ['low', 'mid', 'high']
@@ -19,6 +19,7 @@ describe('logic - retrieve user', () => {
         surname = `surname-${random()}`
         email = `email-${random()}@domain.com`
         password = `password-${random()}`
+        repassword = password
         gender = genderRandom[rand(genderRandom)]
         fitnesslevel = fitnessLvlRandom[rand(fitnessLvlRandom)]
         goal = goalRandom[rand(goalRandom)]
@@ -27,7 +28,7 @@ describe('logic - retrieve user', () => {
         height = floor(random() * ((215 - 50) + 1) + 50)
 
         await User.deleteMany()
-        const user = await User.create({ name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel })
+        const user = await User.create({ name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel })
         id = user.id
     })
 

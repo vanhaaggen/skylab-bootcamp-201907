@@ -7,7 +7,7 @@ const { random, floor } = Math
 describe('logic - calculate workout', () => {
     before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
-    let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, id
+    let name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel, id
 
     // let genderRandom = ['male', 'female']
     // let fitnessLvlRandom = ['low', 'mid', 'high']
@@ -19,6 +19,7 @@ describe('logic - calculate workout', () => {
         surname = `surname-${random()}`
         email = `email-${random()}@domain.com`
         password = `password-${random()}`
+        repassword = password
         gender = 'male'
         fitnesslevel = 'low'
         goal = goal = 'lose'
@@ -27,7 +28,7 @@ describe('logic - calculate workout', () => {
         height = floor(random() * ((215 - 50) + 1) + 50)
 
         await User.deleteMany()
-        const user = await logic.registerUser(name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel)
+        const user = await logic.registerUser(name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel)
         id = user.id
     })
 
@@ -108,7 +109,7 @@ describe('logic - calculate workout', () => {
     describe('logic - User cases', () => {
         describe('CASE 1', () => {
 
-            let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, id
+            let name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel, id
 
             let genderRandom = ['male', 'female']
             let fitnessLvlRandom = ['low', 'mid', 'high']
@@ -120,14 +121,14 @@ describe('logic - calculate workout', () => {
                 surname = `surname-${random()}`
                 email = `email-${random()}@domain.com`
                 password = `password-${random()}`
+                repassword = password
                 gender = genderRandom[rand(genderRandom)]
                 fitnesslevel = fitnessLvlRandom[rand(fitnessLvlRandom)]
                 goal = goal = goalRandom[rand(goalRandom)]
                 birthday = '29/06/1984'
                 weight = floor(random() * ((130 - 50) + 1) + 50)
                 height = floor(random() * ((215 - 50) + 1) + 50)
-
-                const user = await logic.registerUser(name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel)
+                const user = await logic.registerUser(name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel)
                 id = user.id
             })
 
@@ -146,7 +147,7 @@ describe('logic - calculate workout', () => {
 
         describe('CASE 2', () => {
 
-            let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, id
+            let name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel, id
 
             let genderRandom = ['male', 'female']
             let fitnessLvlRandom = ['low', 'mid', 'high']
@@ -158,6 +159,7 @@ describe('logic - calculate workout', () => {
                 surname = `surname-${random()}`
                 email = `email-${random()}@domain.com`
                 password = `password-${random()}`
+                repassword = password
                 gender = genderRandom[rand(genderRandom)]
                 fitnesslevel = fitnessLvlRandom[rand(fitnessLvlRandom)]
                 goal = goal = goalRandom[rand(goalRandom)]
@@ -165,7 +167,7 @@ describe('logic - calculate workout', () => {
                 weight = floor(random() * ((130 - 50) + 1) + 50)
                 height = floor(random() * ((215 - 50) + 1) + 50)
 
-                const user = await logic.registerUser(name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel)
+                const user = await logic.registerUser(name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel)
                 id = user.id
             })
 

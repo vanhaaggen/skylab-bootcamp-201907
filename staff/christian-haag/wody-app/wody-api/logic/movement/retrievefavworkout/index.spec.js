@@ -10,7 +10,7 @@ describe('logic- favWorkout', () => {
     before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
     describe('logic - check favWorkout function', () => {
 
-        let name1, surname1, email1, password1, gender1, birthday1, weight1, height1, goal1, fitnesslevel1, userId1, workoutId1
+        let name1, surname1, email1, password1, repassword, gender1, birthday1, weight1, height1, goal1, fitnesslevel1, userId1, workoutId1
 
 
         let genderRandom = ['male', 'female']
@@ -23,6 +23,7 @@ describe('logic- favWorkout', () => {
             surname1 = `surname-${random()}`
             email1 = `email-${random()}@domain.com`
             password1 = `password-${random()}`
+            repassword = password1
             gender1 = genderRandom[rand(genderRandom)]
             fitnesslevel1 = fitnessLvlRandom[rand(fitnessLvlRandom)]
             goal1 = goalRandom[rand(goalRandom)]
@@ -31,7 +32,7 @@ describe('logic- favWorkout', () => {
             height1 = floor(random() * ((215 - 50) + 1) + 50)
 
 
-            const user1 = await logic.registerUser(name1, surname1, email1, password1, gender1, birthday1, weight1, height1, goal1, fitnesslevel1)
+            const user1 = await logic.registerUser(name1, surname1, email1, password1, repassword, gender1, birthday1, weight1, height1, goal1, fitnesslevel1)
             userId1 = user1.id
             workoutId1 = await logic.calculateWorkout(userId1)
             await logic.favWorkout(workoutId1, userId1)

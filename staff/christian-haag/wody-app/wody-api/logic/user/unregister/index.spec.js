@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs')
 describe('logic - unregister user', () => {
     before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
-    let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, id
+    let name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel, id
 
     let genderRandom = ['male', 'female']
     let fitnessLvlRandom = ['low', 'mid', 'high']
@@ -20,6 +20,7 @@ describe('logic - unregister user', () => {
         surname = `surname-${random()}`
         email = `email-${random()}@domain.com`
         password = `password-${random()}`
+        repassword = password
         gender = genderRandom[rand(genderRandom)]
         fitnesslevel = fitnessLvlRandom[rand(fitnessLvlRandom)]
         goal = goalRandom[rand(goalRandom)]

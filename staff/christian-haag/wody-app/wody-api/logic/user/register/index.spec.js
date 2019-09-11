@@ -5,7 +5,7 @@ const { models: { User } } = require('wody-data')
 const mongoose = require('mongoose')
 const { random, floor } = Math
 
-describe.only('logic - register user', () => {
+describe('logic - register user', () => {
     before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
     let name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel

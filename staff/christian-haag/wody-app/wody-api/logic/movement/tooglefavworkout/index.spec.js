@@ -23,6 +23,7 @@ describe('logic- favWorkout', () => {
             surname = `surname-${random()}`
             email = `email-${random()}@domain.com`
             password = `password-${random()}`
+            repassword = password
             gender = genderRandom[rand(genderRandom)]
             fitnesslevel = fitnessLvlRandom[rand(fitnessLvlRandom)]
             goal = goal = goalRandom[rand(goalRandom)]
@@ -32,7 +33,7 @@ describe('logic- favWorkout', () => {
 
             await User.deleteMany()
             await Workout.deleteMany()
-            const user = await logic.registerUser(name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel)
+            const user = await logic.registerUser(name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel)
             userId = user.id
             workoutId = await logic.calculateWorkout(userId)
 
