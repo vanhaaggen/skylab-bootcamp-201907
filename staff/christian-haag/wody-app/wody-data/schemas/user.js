@@ -28,26 +28,31 @@ module.exports = new Schema({
     historic: [workout],
     gender: {
         type: String,
-        enum: ['male', 'female']
+        enum: ['male', 'female', 'unset'],
+        default: 'unset'
     },
     birthday: {
         type: String,
-        match: /(((0|1)[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/((19|20)\d\d))$/
+        default: 'unset'
     },
     height: {
-        type: Number
+        type: Number,
+        default: 0
     },
     weight: {
-        type: Number
+        type: Number,
+        default: 0
     },
     goal: {
         type: String,
-        enum: ['lose', 'fit', 'gain']
+        enum: ['lose', 'fit', 'gain', 'unset'],
+        default: 'unset'
 
     },
     fitnesslevel: {
         type: String,
-        enum: ['low', 'mid', 'high']
+        enum: ['low', 'mid', 'high', 'unset'],
+        default: 'unset'
     }
 
 })
