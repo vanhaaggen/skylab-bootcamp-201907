@@ -16,7 +16,9 @@ module.exports = function (id) {
 
         if (!user) throw new Error(`user with id ${id} not found`)
 
+        user.id = user._id
         user.id = id
+        delete user._id
 
         return user
 

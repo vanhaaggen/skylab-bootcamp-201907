@@ -23,11 +23,14 @@ module.exports = function (id) {
         const movements = await Movement.find({ gender: gender, goal: goal, fitnesslevel: fitnesslevel }).lean()
 
         const movementsClone = [...movements]
-        debugger
+
         //order result randomly in array
         let selectRandomMovement = randomator(movementsClone)
         //keep only the first 5 array values
         selectRandomMovement.splice(5)
+
+        selectRandomMovement.id = selectRandomMovement._id
+        delete selectRandomMovement._id
         //choose One rep option
         selectRandomMovement.forEach(movement => {
             const { reps } = movement
@@ -45,6 +48,8 @@ module.exports = function (id) {
         randomSet.splice(1)
         //create Workout instance
         const workoutOfTheDay = new Workout({ sets: randomSet, movements: selectRandomMovement })
+
+        if (user.current.length >= 1) user.current.pop()
 
         user.current.push(workoutOfTheDay)
 

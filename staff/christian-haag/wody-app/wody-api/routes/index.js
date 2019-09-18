@@ -28,7 +28,7 @@ router.delete('/users', [tokenMiddleware, jsonBodyParser], unregisterUser)
 router.post('/users/calcworkout', [tokenMiddleware, jsonBodyParser], calculateWorkout)
 router.post('/users/workoutfav/:workoutId', [tokenMiddleware, jsonBodyParser], toogleFavWorkout)
 router.post('/users/workoutend/:workoutId', [tokenMiddleware, jsonBodyParser], endWorkout)
-router.get('/users/retrievefav', jsonBodyParser, retrieveFavWorkout)
+router.get('/users/retrievefav', [tokenMiddleware, jsonBodyParser], retrieveFavWorkout)
 
 
 module.exports = router
