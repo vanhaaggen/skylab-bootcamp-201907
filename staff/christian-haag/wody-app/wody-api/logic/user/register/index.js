@@ -19,12 +19,18 @@ const bcrypt = require('bcryptjs')
  * 
  * @returns {Promise}
  */
-module.exports = function (name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel) {
+module.exports = function (name, surname, email, password, gender = 'unset', birthday = 'unset', weight = 0, height = 0, goal = 'unset', fitnesslevel = 'unset') {
 
     validate.string(name, 'name')
     validate.string(surname, 'surname')
     validate.string(email, 'email')
     validate.string(password, 'password')
+    validate.string(gender, 'gender')
+    validate.string(birthday, 'birthday')
+    validate.number(weight, 'weight')
+    validate.number(height, 'height')
+    validate.string(goal, 'goal')
+    validate.string(fitnesslevel, 'fitnesslevel')
 
     return (async () => {
 

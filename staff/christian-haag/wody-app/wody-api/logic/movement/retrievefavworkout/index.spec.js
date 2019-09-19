@@ -4,6 +4,7 @@ const logic = require('../..')
 const { models: { User, Workout } } = require('wody-data')
 const mongoose = require('mongoose')
 const { random, floor } = Math
+const { database } = require('wody-data')
 
 
 describe('logic- favWorkout', () => {
@@ -82,5 +83,5 @@ describe('logic- favWorkout', () => {
         })
     })
 
-    after(() => mongoose.disconnect())
+    after(() => database.disconnect())
 })

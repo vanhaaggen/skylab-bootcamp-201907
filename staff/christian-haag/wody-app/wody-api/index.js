@@ -5,10 +5,11 @@ const mongoose = require('mongoose')
 const { name, version } = require('./package')
 const routes = require('./routes')
 const cors = require('cors')
+const { database } = require('wody-data')
 
-const { env: { PORT, DB_URL/*_API_LOGIC_TEST*/ } } = process
+const { env: { PORT, DB_URL } } = process
 
-mongoose.connect(DB_URL/*_API_LOGIC_TEST*/, { useNewUrlParser: true, useUnifiedTopology: true })
+database.connect(DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         const app = express()
 
@@ -21,7 +22,7 @@ mongoose.connect(DB_URL/*_API_LOGIC_TEST*/, { useNewUrlParser: true, useUnifiedT
 process.on('SIGINT', () => {
     console.log(`\n${name} ${version} shutting down, disconnecting from db...`)
 
-    mongoose.disconnect()
+    database.disconnect()
 
     process.exit(0)
 })

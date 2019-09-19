@@ -2,11 +2,11 @@ const { expect } = require('chai')
 const bcrypt = require('bcryptjs')
 const logic = require('../../.')
 const { models: { User } } = require('wody-data')
-const mongoose = require('mongoose')
 const { random, floor } = Math
+const { database } = require('wody-data')
 
 describe('logic - register user', () => {
-    before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
+    before(() => database.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
     let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel
 
@@ -108,6 +108,87 @@ describe('logic - register user', () => {
         ).to.throw(`password with value 123456798 is not a string`)
     )
 
+    it('should fail on empty gender', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, '', birthday, weight, height, goal, fitnesslevel)
+        ).to.throw('gender is empty or blank')
+    )
+
+
+    it('should fail on wrong data type', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, 123456798, birthday, weight, height, goal, fitnesslevel)
+        ).to.throw(`gender with value 123456798 is not a string`)
+    )
+
+
+    it('should fail on empty birthday', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, '', weight, height, goal, fitnesslevel)
+        ).to.throw('birthday is empty or blank')
+    )
+
+
+    it('should fail on wrong data birthday', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, 123456798, weight, height, goal, fitnesslevel)
+        ).to.throw(`birthday with value 123456798 is not a string`)
+    )
+
+    it('should fail on empty weight', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, birthday, '', height, goal, fitnesslevel)
+        ).to.throw('weight is empty or blank')
+    )
+
+
+    it('should fail on wrong data weight', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, birthday, 'abcde', height, goal, fitnesslevel)
+        ).to.throw(`weight with value abcde is not a number`)
+    )
+
+
+    it('should fail on empty height', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, birthday, weight, '', goal, fitnesslevel)
+        ).to.throw('height is empty or blank')
+    )
+
+
+    it('should fail on wrong data height', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, birthday, weight, 'abcd', goal, fitnesslevel)
+        ).to.throw(`height with value abcd is not a number`)
+    )
+
+    it('should fail on empty goal', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, birthday, weight, height, '', fitnesslevel)
+        ).to.throw('goal is empty or blank')
+    )
+
+
+    it('should fail on wrong data goal', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, birthday, weight, height, 12345, fitnesslevel)
+        ).to.throw(`goal with value 12345 is not a string`)
+    )
+
+    it('should fail on empty fitnesslevel', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, birthday, weight, height, goal, '')
+        ).to.throw('fitnesslevel is empty or blank')
+    )
+
+
+    it('should fail on wrong data fitnesslevel', () =>
+        expect(() =>
+            logic.registerUser(name, surname, email, password, gender, birthday, weight, height, goal, 12345)
+        ).to.throw(`fitnesslevel with value 12345 is not a string`)
+    )
+
+
 
 
 
@@ -174,5 +255,5 @@ describe('logic - register user', () => {
         })
 
     })
-    after(() => mongoose.disconnect())
+    after(() => database.disconnect())
 })

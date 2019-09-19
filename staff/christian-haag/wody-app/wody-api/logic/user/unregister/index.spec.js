@@ -1,12 +1,12 @@
 const { expect } = require('chai')
 const logic = require('../../.')
 const { models: { User } } = require('wody-data')
-const mongoose = require('mongoose')
 const { random, floor } = Math
 const bcrypt = require('bcryptjs')
+const { database } = require('wody-data')
 
 describe('logic - unregister user', () => {
-    before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
+    before(() => database.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
     let name, surname, email, password, repassword, gender, birthday, weight, height, goal, fitnesslevel, id
 
@@ -97,5 +97,5 @@ describe('logic - unregister user', () => {
         }
     })
 
-    after(() => mongoose.disconnect())
+    after(() => database.disconnect())
 })

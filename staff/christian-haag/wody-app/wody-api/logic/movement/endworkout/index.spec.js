@@ -1,11 +1,11 @@
 const { expect } = require('chai')
 const logic = require('../..')
 const { models: { User, Workout } } = require('wody-data')
-const mongoose = require('mongoose')
 const { random, floor } = Math
+const { database } = require('wody-data')
 
 describe('logic- endWorkout', () => {
-    before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
+    before(() => database.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
     let name, surname, email, password, gender, birthday, weight, height, goal, fitnesslevel, userId, workoutId
 
@@ -101,5 +101,5 @@ describe('logic- endWorkout', () => {
 
     })
 
-    after(() => mongoose.disconnect())
+    after(() => database.disconnect())
 })

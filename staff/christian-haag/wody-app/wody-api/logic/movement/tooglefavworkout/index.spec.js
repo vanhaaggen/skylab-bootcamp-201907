@@ -1,12 +1,12 @@
 const { expect } = require('chai')
 const logic = require('../..')
 const { models: { User, Workout } } = require('wody-data')
-const mongoose = require('mongoose')
 const { random, floor } = Math
+const { database } = require('wody-data')
 
 
 describe('logic- favWorkout', () => {
-    before(() => mongoose.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
+    before(() => database.connect('mongodb://localhost/wody-server-test', { useNewUrlParser: true }))
 
 
     describe('logic - check favWorkout Enviorment.', () => {
@@ -127,6 +127,6 @@ describe('logic- favWorkout', () => {
 
     })
 
-    after(() => mongoose.disconnect())
+    after(() => database.disconnect())
 
 })
